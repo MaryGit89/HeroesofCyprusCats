@@ -58,7 +58,7 @@ Hier sind die Informationen über die Katze(n):
 
         try:
             # Erstelle die deutsche Beschreibung
-            response_de = client.chat.completions.create(
+            response_de = openai.ChatCompletion.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=1000,
@@ -73,7 +73,7 @@ Hier sind die Informationen über die Katze(n):
 {output_text}
 """
 
-            response_en = client.chat.completions.create(
+            response_en = openai.ChatCompletion.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": translation_prompt_en}],
                 max_tokens=1000,
@@ -88,7 +88,7 @@ Hier sind die Informationen über die Katze(n):
 {output_text}
 """
 
-            response_gr = client.chat.completions.create(
+            response_gr = openai.ChatCompletion.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": translation_prompt_gr}],
                 max_tokens=1500,
