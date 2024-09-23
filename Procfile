@@ -1,1 +1,2 @@
-web: gunicorn Katzenbeschreibungsgenerator:app
+web: gunicorn Katzenbeschreibungsgenerator:app --timeout 90
+
