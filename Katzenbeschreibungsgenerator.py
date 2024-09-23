@@ -5,7 +5,7 @@ from openai import OpenAI
 app = Flask(__name__)
 
 # Setze deinen OpenAI API-Schlüssel
-api_key = os.environ.get("OPENAI_API_KEY")
+open.api_key = os.environ.get("OPENAI_API_KEY")
 # Oder direkt (nicht empfohlen):
 # api_key = 'DEIN_API_KEY'
 
