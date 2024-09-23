@@ -11,9 +11,6 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 if not openai.api_key:
     raise ValueError("Bitte setze den OpenAI API-Schlüssel in der Umgebungsvariable 'OPENAI_API_KEY'.")
 
-# Initialisiere den OpenAI Client
-client = OpenAI(api_key=api_key)
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     output_text = ''
@@ -21,6 +18,7 @@ def home():
     output_text_gr = ''
     input_text = ''
     error_message = ''
+
     if request.method == 'POST':
         input_text = request.form['input_text']
 
