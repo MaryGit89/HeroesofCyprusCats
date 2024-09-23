@@ -1,15 +1,19 @@
 import os
 from flask import Flask, request, render_template_string
-from openai import OpenAI  # Importieren des OpenAI-Clients
+from openai import OpenAI
 
 app = Flask(__name__)
 
-# Setzen des OpenAI API-Schlüssels
+# Setze deinen OpenAI API-Schlüssel
 api_key = os.environ.get("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("Bitte setzen Sie den OpenAI API-Schlüssel in der Umgebungsvariable 'OPENAI_API_KEY'.")
+# Oder direkt (nicht empfohlen):
+# api_key = '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'
 
-# Initialisieren des OpenAI-Clients
+# Überprüfe, ob der API-Schlüssel gesetzt ist
+if not api_key:
+    raise ValueError("Bitte setze den OpenAI API-Schlüssel in der Umgebungsvariable 'OPENAI_API_KEY'.")
+
+# Initialisiere den OpenAI Client
 client = OpenAI(api_key=api_key)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -19,7 +23,6 @@ def home():
     output_text_gr = ''
     input_text = ''
     error_message = ''
-
     if request.method == 'POST':
         input_text = request.form['input_text']
 
