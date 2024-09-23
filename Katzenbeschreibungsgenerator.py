@@ -1,6 +1,12 @@
-import os
-from flask import Flask, request, render_template_string
+import openai
 from openai import OpenAI
+import docx
+from docx.shared import Pt, RGBColor
+from docx.enum.style import WD_STYLE_TYPE
+import datetime
+import os
+import re
+import subprocess
 
 app = Flask(__name__)
 
