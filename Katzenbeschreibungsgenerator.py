@@ -13,7 +13,7 @@ app = Flask(__name__)
 # Setze deinen OpenAI API-Schlüssel
 api_key = os.environ.get("OPENAI_API_KEY")
 # Oder direkt (nicht empfohlen):
-# api_key = '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'
+# api_key = 'DEIN_API_KEY'
 
 # Überprüfe, ob der API-Schlüssel gesetzt ist
 if not api_key:
