@@ -1,0 +1,601 @@
+<title>Claude Cockpit</title>
+<meta name="description" content="Claude Cockpit: Dein Betriebssystem für Claude Cowork und Claude Code. 60+ Premium-Skills, 7 Sub-Agents, 10 Template-Sammlungen und ein Langzeit-Gedächtnis. In 10 Minuten startklar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+  /* KI mit Marie, gedämpft: Weiß und Fast-Schwarz tragen, Pink nur für Kauf-Aktionen, Türkis nur für Häkchen und Markierungen. */
+  :root {
+    --pink: #FF66C4;
+    --pink-hover: #E84FAE;
+    --pink-soft: #FFE5F4;
+    --cyan: #5CE1E6;
+    --cyan-deep: #1FA9AF;
+    --cyan-soft: #E8FAFB;
+    --white: #FFFFFF;
+    --ink: #0A0A0A;
+    --ink-2: #2B2B2B;
+    --muted: #616366;
+    --line: #E5E5E5;
+    --paper: #F7F8F8;
+
+    --display: 'League Spartan', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 9999px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --wrap: 1120px;
+    --gutter: clamp(16px, 4vw, 48px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  ::selection { background: var(--pink); color: var(--white); }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+
+  .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+  section { padding-block: clamp(64px, 9vw, 112px); }
+
+  h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 800; }
+  h3 { font-size: 21px; line-height: 1.2; font-weight: 700; }
+  p { margin: 0; text-wrap: pretty; }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--cyan);
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+  .section-head { display: grid; gap: 16px; max-width: 720px; margin-bottom: clamp(36px, 5vw, 56px); }
+  .lead { font-size: clamp(18px, 1.6vw, 20px); color: var(--ink-2); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--display); font-weight: 700; font-size: 16px;
+    letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;
+    padding: 18px 30px 16px; border-radius: var(--radius-pill);
+    background: var(--pink); color: var(--white); border: 0; cursor: pointer;
+    transition: transform 200ms var(--bounce), box-shadow 200ms var(--ease), background 200ms var(--ease);
+  }
+  .btn:hover { background: var(--pink-hover); transform: scale(1.03); box-shadow: 0 8px 32px rgba(255, 102, 196, 0.28); }
+  .btn:active { transform: scale(0.97); }
+  .btn svg { width: 18px; height: 18px; margin-top: -2px; }
+  .btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--white); box-shadow: none; }
+
+  /* Header */
+  .site-header {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px; }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .brand img { height: 44px; width: auto; }
+  .brand span { font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.15; color: var(--muted); }
+  .brand strong { display: block; color: var(--ink); font-size: 17px; }
+  .site-header .btn { padding: 13px 22px 11px; font-size: 14px; }
+
+  /* Hero */
+  .hero { padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 104px); overflow-x: clip; }
+  main, footer { overflow-x: clip; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero h1 {
+    font-size: clamp(44px, 6.4vw, 84px); line-height: 0.98; font-weight: 800;
+    text-transform: uppercase; letter-spacing: -0.02em; margin-block: 18px 22px;
+  }
+  .hero h1 .mark { position: relative; white-space: nowrap; }
+  .hero h1 .mark::after {
+    content: ""; position: absolute; left: -2px; right: -4px; bottom: 0.06em; height: 0.2em;
+    background: var(--pink); opacity: 0.85; z-index: -1; border-radius: 3px;
+  }
+  .hero h1 .mark { z-index: 0; }
+  .hero .lead { max-width: 34em; }
+  .kit {
+    list-style: none; padding: 0; margin: 28px 0 32px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+  }
+  .kit li {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 14px 16px; border-radius: var(--radius-md); background: var(--paper);
+  }
+  .kit b { font-family: var(--display); font-size: 26px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+  .kit span { font-size: 15px; color: var(--ink-2); line-height: 1.3; }
+  .hero-buy { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; }
+  .price-inline { display: grid; line-height: 1.1; }
+  .price-inline s { color: var(--muted); font-size: 15px; }
+  .price-inline strong { font-family: var(--display); font-size: 34px; font-weight: 800; }
+  .price-inline small { color: var(--muted); font-size: 13px; }
+
+  /* Chat-Mockup */
+  .console {
+    background: var(--ink); color: #F2F2F2; border-radius: var(--radius-lg);
+    padding: 20px; box-shadow: 0 24px 60px rgba(10, 10, 10, 0.16);
+    font-size: 15px; position: relative;
+  }
+  .console-bar { display: flex; align-items: center; gap: 8px; padding-bottom: 16px; border-bottom: 1px solid #262626; margin-bottom: 18px; }
+  .console-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3A3A3A; }
+  .console-bar span { margin-left: 8px; font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #9A9A9A; }
+  .msgs { display: grid; gap: 14px; }
+  .msg { max-width: 88%; padding: 12px 16px; border-radius: 18px; line-height: 1.5; }
+  .msg.you { justify-self: end; background: #232323; border-bottom-right-radius: 6px; }
+  .msg.claude { background: transparent; padding-inline: 0; color: #E6E6E6; }
+  .msg.claude .who { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
+  .skill-tag {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+    font-size: 12.5px; padding: 5px 11px; border-radius: var(--radius-pill);
+    background: rgba(92, 225, 230, 0.12); color: var(--cyan);
+  }
+  .console .kitty { position: absolute; width: 104px; right: -12px; bottom: -40px; transform: rotate(8deg); }
+  @media (prefers-reduced-motion: no-preference) {
+    .msg { animation: rise 520ms var(--ease) both; }
+    .msg:nth-child(2) { animation-delay: 160ms; }
+    .msg:nth-child(3) { animation-delay: 320ms; }
+    .msg:nth-child(4) { animation-delay: 480ms; }
+    @keyframes rise { from { transform: translateY(10px); } to { transform: none; } }
+  }
+
+  /* Kollege */
+  .colleague { background: var(--paper); }
+  .colleague .wrap { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .colleague .body { display: grid; gap: 18px; font-size: 18px; color: var(--ink-2); }
+  .pull {
+    font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.2vw, 26px); line-height: 1.25;
+    color: var(--ink); padding-left: 20px; border-left: 4px solid var(--cyan);
+  }
+
+  /* Benefits */
+  .benefits { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; }
+  .benefits li { display: grid; grid-template-columns: 28px 1fr; gap: 14px; padding-block: 20px; border-top: 1px solid var(--line); }
+  .benefits li:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .check { width: 26px; height: 26px; border-radius: 50%; background: var(--cyan-soft); display: grid; place-items: center; margin-top: 1px; }
+  .check svg { width: 15px; height: 15px; stroke: var(--cyan-deep); }
+  .benefits b { font-weight: 700; }
+
+  /* Inhalt */
+  .contents { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+  .part { background: var(--white); border: 2px solid var(--ink); border-radius: var(--radius-lg); padding: 28px; display: grid; gap: 10px; align-content: start; }
+  .part .num { font-family: var(--display); font-weight: 800; font-size: 52px; line-height: 0.9; letter-spacing: -0.02em; }
+  .part p { color: var(--ink-2); font-size: 16px; }
+  .part.skills { grid-column: span 7; }
+  .part.agents { grid-column: span 5; grid-row: span 2; background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .part.agents p { color: #CFCFCF; }
+  .part.templates { grid-column: span 4; }
+  .part.memory { grid-column: span 3; }
+  .part.setup { grid-column: span 12; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; background: var(--cyan-soft); border-color: var(--cyan-soft); }
+  .part.setup div { display: grid; gap: 6px; max-width: 640px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .chip { font-size: 14px; padding: 6px 13px; border-radius: var(--radius-pill); background: var(--paper); color: var(--ink); }
+  .agents .chip { background: #1E1E1E; color: #F0F0F0; }
+  .agents .chip::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); margin-right: 8px; vertical-align: 1px; }
+  .part.setup .chip { background: var(--white); }
+
+  /* Schritte */
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; counter-reset: step; }
+  .steps li { counter-increment: step; display: grid; gap: 12px; align-content: start; padding-top: 22px; border-top: 2px solid var(--ink); }
+  .steps li::before {
+    content: counter(step); font-family: var(--display); font-weight: 800; font-size: 15px;
+    width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; padding-top: 3px;
+    background: var(--ink); color: var(--white);
+  }
+  .steps li:last-child::before { background: var(--pink); }
+  .steps p { color: var(--ink-2); font-size: 16px; }
+  .kbd { font-family: var(--display); font-weight: 700; background: var(--paper); padding: 2px 9px 0; border-radius: 8px; }
+
+  /* Für wen */
+  .audience { background: var(--paper); }
+  .who-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .who-card { background: var(--white); border-radius: var(--radius-lg); padding: 28px; display: grid; gap: 8px; align-content: start; }
+  .who-card p { color: var(--ink-2); font-size: 16px; }
+
+  /* Nicht */
+  .not { background: var(--ink); color: var(--white); }
+  .not .wrap { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .not .eyebrow { color: #A8A8A8; }
+  .not .body { display: grid; gap: 18px; font-size: 18px; color: #D6D6D6; }
+  .not .body strong { color: var(--white); }
+
+  /* Team */
+  .team-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .person { display: grid; grid-template-columns: 120px 1fr; gap: 22px; align-items: start; padding: 28px; border-radius: var(--radius-lg); border: 2px solid var(--line); }
+  .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; background: var(--paper); }
+  .avatar.initials { display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 36px; color: var(--muted); padding-top: 6px; }
+  .person .role { font-size: 14px; color: var(--muted); margin-block: 4px 12px; }
+  .person p:last-child { color: var(--ink-2); font-size: 16px; }
+
+  /* Preis */
+  .buy .card {
+    display: grid; grid-template-columns: 1.1fr 0.9fr; border-radius: 32px; overflow: hidden;
+    border: 2px solid var(--ink);
+  }
+  .buy .left { padding: clamp(28px, 4vw, 52px); display: grid; gap: 20px; align-content: start; }
+  .buy .right { background: var(--pink-soft); padding: clamp(28px, 4vw, 52px); display: grid; gap: 18px; align-content: center; justify-items: start; position: relative; }
+  .incl { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .incl li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; }
+  .badge { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--ink); color: var(--white); padding: 7px 14px 5px; border-radius: var(--radius-pill); }
+  .price-big { display: grid; gap: 4px; }
+  .price-big .was { font-size: 17px; color: var(--muted); }
+  .price-big .now { font-family: var(--display); font-weight: 800; font-size: clamp(64px, 8vw, 92px); line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .price-big .now sup { font-size: 0.42em; vertical-align: 0.95em; margin-left: 4px; }
+  .price-big .tax { font-size: 14px; color: var(--ink-2); }
+  .buy .btn { width: 100%; }
+  .pay { font-size: 14px; color: var(--ink-2); display: grid; gap: 6px; }
+  .pay-methods { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pay-methods span { font-size: 13px; font-weight: 500; background: var(--white); padding: 4px 11px; border-radius: var(--radius-pill); }
+  .buy .kitty { position: absolute; width: 110px; right: 18px; top: -58px; }
+
+  /* FAQ */
+  .faq { display: grid; gap: 0; max-width: 820px; }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:last-child { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    list-style: none; cursor: pointer; padding-block: 22px; display: flex; justify-content: space-between; gap: 20px;
+    font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.3;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-size: 26px; line-height: 0.9; color: var(--muted); transition: transform 200ms var(--ease); }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { padding-bottom: 22px; color: var(--ink-2); max-width: 64ch; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); padding-block: 36px 96px; font-size: 14px; color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  /* Mobile Kaufleiste */
+  .mobile-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: none;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--white); border-top: 1px solid var(--line);
+    align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .mobile-bar .btn { padding: 13px 20px 11px; font-size: 14px; }
+  .mobile-bar b { font-family: var(--display); font-size: 22px; }
+  .mobile-bar s { color: var(--muted); font-size: 13px; margin-left: 6px; }
+
+  @media (max-width: 920px) {
+    .hero .wrap, .colleague .wrap, .not .wrap, .buy .card { grid-template-columns: 1fr; }
+    .console { max-width: 560px; }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
+    .part.skills, .part.agents, .part.templates, .part.memory { grid-column: span 12; grid-row: auto; }
+    .team-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .brand span { display: none; }
+    .site-header .btn { display: none; }
+    .benefits, .who-grid, .steps { grid-template-columns: 1fr; }
+    .benefits li:nth-last-child(2) { border-bottom: 0; }
+    .kit b { font-size: 22px; }
+    .kit li { flex-direction: column; gap: 4px; }
+    .person { grid-template-columns: 1fr; }
+    .avatar { width: 96px; height: 96px; }
+    .console .kitty { width: 80px; right: -6px; bottom: -34px; }
+    .buy .kitty { width: 86px; top: -44px; }
+    .mobile-bar { display: flex; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Claude Cockpit, zum Seitenanfang">
+      <img src="assets/logo.png" alt="KI mit Marie" width="42" height="44">
+      <span><strong>Claude Cockpit</strong>mit Felix Beilharz</span>
+    </a>
+    <a class="btn" href="#kaufen">Cockpit sichern</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Für Claude Cowork &amp; Claude Code</span>
+        <h1>Aus Claude wird <span class="mark">dein</span> Claude.</h1>
+        <p class="lead">Das Betriebssystem für Claude Cowork und Claude Code. KI-Agenten, die dich und deinen Schreibstil kennen, täglich dazulernen und immer besser werden. In rund 10 Minuten startklar, ohne eine Zeile Code.</p>
+        <ul class="kit" aria-label="Das steckt drin">
+          <li><b>60+</b><span>Premium-Skills</span></li>
+          <li><b>7</b><span>Sub-Agents</span></li>
+          <li><b>10</b><span>Template-Sammlungen</span></li>
+          <li><b>1</b><span>Langzeit-Gedächtnis</span></li>
+        </ul>
+        <div class="hero-buy">
+          <a class="btn" href="#kaufen">Jetzt für 99 € sichern <svg><use href="#i-arrow"/></svg></a>
+          <div class="price-inline">
+            <s>statt 177 €</s>
+            <small>inkl. MwSt., Sofort-Download</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="console" aria-label="Beispiel: So sieht die Arbeit mit Claude Cockpit aus">
+        <div class="console-bar"><i></i><i></i><i></i><span>Claude Cowork</span></div>
+        <div class="msgs">
+          <div class="msg you">Starte</div>
+          <div class="msg claude">
+            <div class="who">Claude Cockpit</div>
+            Schön, dass du da bist! Schick mir drei Texte, die du richtig gut findest. Daraus lerne ich deine Schreibstimme.
+          </div>
+          <div class="msg you">Schreib mir einen LinkedIn-Post über mein neues Webinar.</div>
+          <div class="msg claude">
+            <div class="who">Claude Cockpit</div>
+            Mach ich, in deinem Ton und mit deinem Hook-Stil. Das Lektorat liest danach noch gegen.
+            <div class="skill-tag">LinkedIn-Skill · Lektor-Agent</div>
+          </div>
+        </div>
+        <img class="kitty" src="assets/ki-tty.png" alt="" width="104" height="104">
+      </div>
+    </div>
+  </section>
+
+  <!-- KOLLEGE -->
+  <section class="colleague">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:0">
+        <span class="eyebrow">Was du bekommst</span>
+        <h2>Kein Plugin. Ein neuer Kollege.</h2>
+      </div>
+      <div class="body">
+        <p>Am Anfang weiß er nichts über dich. In rund 10 Minuten arbeitet er sich ein. Danach schreibt er in deiner Stimme, kennt deine Plattformen, hat alle Werkzeuge auf dem Tisch und arbeitet mit dir wie jemand, der schon ein paar Wochen im Team ist.</p>
+        <p class="pull">Du musst dir keine Befehle und keine Skill-Namen merken. Sag in normalen Worten, was du brauchst. Claude greift automatisch zum richtigen Werkzeug.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUTZEN -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Was dir das bringt</span>
+        <h2>Weniger nachbessern. Mehr, das nach dir klingt.</h2>
+      </div>
+      <ul class="benefits">
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Dein Claude statt irgendein Claude.</b> Einer, der deinen Schreibstil kennt und in deinem Branding arbeitet.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Schluss mit Bot-Texten.</b> Du sparst dir das ewige Nachbessern, weil Claude von Anfang an nach dir klingt statt nach Vorlage.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Ein Werkzeug für fast jede Schreibaufgabe.</b> LinkedIn, Newsletter, Blog, Landingpage, Angebot, Recherche und vieles mehr.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Helfer im Hintergrund.</b> Einer lektoriert, einer recherchiert, einer prüft Fakten, einer sprudelt Ideen.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Fertige Bausteine.</b> Hooks, Headlines, Story-Gerüste und Angebots-Module, aus denen Claude für dich schöpft.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Ein Gedächtnis, das mitwächst.</b> Claude merkt sich deine Vorlieben, No-Gos und Regeln und wird mit der Zeit immer besser.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Belegt statt geraten.</b> Ein eingebauter Quellen-Check prüft online und belegt Zahlen, statt aus dem Bauch zu raten.</p></li>
+        <li><span class="check"><svg><use href="#i-check"/></svg></span><p><b>Sofort startklar.</b> In rund 10 Minuten eingerichtet, komplett auf Deutsch, ganz ohne Programmierkenntnisse.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- INHALT -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Was drinsteckt</span>
+        <h2>Dein komplettes Cockpit.</h2>
+      </div>
+      <div class="contents">
+        <article class="part skills">
+          <span class="num">60+</span>
+          <h3>Premium-Skills</h3>
+          <p>Für Content, Sales, Recherche, deinen Arbeitsalltag und besonders regulierte Branchen.</p>
+          <div class="chips"><span class="chip">LinkedIn-Posts</span><span class="chip">Newsletter</span><span class="chip">Landingpages</span><span class="chip">Angebote</span><span class="chip">Recherche</span><span class="chip">Blog</span></div>
+        </article>
+        <article class="part agents">
+          <span class="num">7</span>
+          <h3>Sub-Agents</h3>
+          <p>Spezialisierte Helfer, die im Hintergrund prüfen, recherchieren und gegenlesen.</p>
+          <div class="chips"><span class="chip">Lektor</span><span class="chip">Rechercheur</span><span class="chip">Faktenchecker</span><span class="chip">Ideen-Partner</span><span class="chip">Rechts-Prüfer</span><span class="chip">Sensibilitäts-Prüfer</span><span class="chip">Textprofi</span></div>
+        </article>
+        <article class="part templates">
+          <span class="num">10</span>
+          <h3>Template-Sammlungen</h3>
+          <p>Hook-Formeln, Headline-Formeln, Story-Frameworks, CTA-Sammlung, Angebots-Bausteine und mehr.</p>
+        </article>
+        <article class="part memory">
+          <span class="num">1</span>
+          <h3>Langzeit-Gedächtnis</h3>
+          <p>Kennt dich und deinen Stil mit der Zeit immer besser.</p>
+        </article>
+        <article class="part setup">
+          <div>
+            <h3>Plus: das geführte 10-Minuten-Setup</h3>
+            <p>Es lernt deine Schreibstimme aus deinen eigenen Texten. Mit Videos zum Einrichten, Testen und, falls du willst, wieder Deinstallieren.</p>
+          </div>
+          <div class="chips"><span class="chip">Setup einrichten</span><span class="chip">Setup testen</span><span class="chip">Setup deinstallieren</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHRITTE -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">So startest du</span>
+        <h2>Vier Schritte, rund 10 Minuten.</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Paket hochladen</h3><p>Lade das Paket in der Claude-App hoch. Die Schritt-für-Schritt-Anleitung mit Bildern liegt dabei.</p></li>
+        <li><h3>Ordner verbinden</h3><p>Verbinde einen Ordner auf deinem Computer. Dort liegen dein Profil, deine Schreibstimme und dein Gedächtnis, auf deinem eigenen Rechner.</p></li>
+        <li><h3>„Starte“ schreiben</h3><p>Das Setup-Gespräch führt dich durch alles Weitere und fragt nach ein paar deiner besten Texte.</p></li>
+        <li><h3>Loslegen</h3><p>Probier <span class="kbd">Schreib mir einen LinkedIn-Post über …</span> und du merkst: Das klingt nach dir.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FÜR WEN -->
+  <section class="audience">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Für wen</span>
+        <h2>Für alle, die viel schreiben und wenig Zeit haben.</h2>
+      </div>
+      <div class="who-grid">
+        <div class="who-card"><h3>Marketer</h3><p>Die wiederkehrende Aufgaben wie Content-Erstellung, Recycling und Reporting endlich an einen KI-Kollegen abgeben wollen.</p></div>
+        <div class="who-card"><h3>Coaches, Berater und Trainer</h3><p>Die Angebote, Newsletter, Posts und Workshop-Material schneller und in der eigenen Stimme erstellen wollen.</p></div>
+        <div class="who-card"><h3>Selbstständige und Unternehmer</h3><p>Die Recherche, Kundenkommunikation und das tägliche Schreiben entlasten wollen.</p></div>
+        <div class="who-card"><h3>Alle, die KI schon nutzen</h3><p>Aber keine Lust mehr auf generische Bot-Texte und kein Interesse am Programmieren haben.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NICHT -->
+  <section class="not">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:0">
+        <span class="eyebrow">Was es nicht ist</span>
+        <h2>Kein Tech-Projekt. Kein Programmier-Kurs.</h2>
+      </div>
+      <div class="body">
+        <p>Du installierst ein Paket und sprichst danach in normalen Worten mit Claude. Das war's.</p>
+        <p><strong>Keine leeren Versprechen, keine erfundenen Garantien.</strong> Claude bleibt ein Werkzeug. Aber eines, das endlich nach dir klingt und mitdenkt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Wer dahintersteht</span>
+        <h2>KI, die im echten Arbeitsalltag funktioniert.</h2>
+        <p class="lead">Verständlich erklärt und ohne Hype.</p>
+      </div>
+      <div class="team-grid">
+        <article class="person">
+          <div class="avatar initials" aria-hidden="true">FB</div>
+          <div>
+            <h3>Felix Beilharz</h3>
+            <p class="role">Berater für Online- und Social-Media-Marketing</p>
+            <p>Zählt zu den führenden Beratern für Online- und Social-Media-Marketing (RTL), ist seit über 23 Jahren aktiv und unterrichtet an mehreren Hochschulen in Deutschland und der Schweiz.</p>
+          </div>
+        </article>
+        <article class="person">
+          <img class="avatar" src="assets/marie.jpg" alt="Marie Christine Reiter" width="120" height="120">
+          <div>
+            <h3>Marie Christine Reiter</h3>
+            <p class="role">KI mit Marie · KI-Trainerin, Content Creatorin &amp; Speakerin</p>
+            <p>Macht KI aus Düsseldorf heraus praktisch und zugänglich für Online-Marketer, KMU und KI-Einsteiger. Mit echten Prompts aus dem Alltag statt Theorie.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- KAUFEN -->
+  <section class="buy" id="kaufen" style="padding-top:clamp(40px,6vw,72px)">
+    <div class="wrap">
+      <div class="card">
+        <div class="left">
+          <span class="eyebrow">Alles auf einen Blick</span>
+          <h2>Claude Cockpit</h2>
+          <ul class="incl">
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>60+ Premium-Skills für Content, Sales und Recherche</span></li>
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>7 Sub-Agents, die prüfen, recherchieren und gegenlesen</span></li>
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>10 Template-Sammlungen mit fertigen Bausteinen</span></li>
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>Langzeit-Gedächtnis, lokal auf deinem Rechner</span></li>
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>Geführtes 10-Minuten-Setup mit Anleitung und Videos</span></li>
+            <li><span class="check"><svg><use href="#i-check"/></svg></span><span>Für Claude Cowork und Claude Code, komplett auf Deutsch</span></li>
+          </ul>
+        </div>
+        <div class="right">
+          <img class="kitty" src="assets/ki-tty.png" alt="" width="110" height="110">
+          <span class="badge">Einführungspreis</span>
+          <div class="price-big">
+            <span class="was">statt <s>177 €</s></span>
+            <span class="now">99<sup>€</sup></span>
+            <span class="tax">Einmalzahlung, inkl. MwSt. Kein Abo.</span>
+          </div>
+          <!-- CHECKOUT: href durch den Bestell-Link des Zahlungsanbieters ersetzen -->
+          <a class="btn" href="#CHECKOUT-LINK">Jetzt Cockpit sichern <svg><use href="#i-arrow"/></svg></a>
+          <div class="pay">
+            <span>Sofort-Download nach dem Kauf, Bestätigung per E-Mail.</span>
+            <div class="pay-methods"><span>PayPal</span><span>Kreditkarte</span><span>Überweisung</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Häufige Fragen</span>
+        <h2>Gut, dass du fragst.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Brauche ich Programmierkenntnisse?</summary>
+          <p>Nein. Du lädst ein Paket hoch, verbindest einen Ordner und schreibst „Starte“. Alles Weitere erklärt dir Claude im Gespräch, auf Deutsch.</p>
+        </details>
+        <details>
+          <summary>Was brauche ich, um das Cockpit zu nutzen?</summary>
+          <p>Die Claude-App auf deinem Computer und ein Claude-Abo, mit dem du Claude Cowork bzw. Claude Code nutzen kannst. Das Claude-Abo ist nicht im Preis enthalten.</p>
+        </details>
+        <details>
+          <summary>Wo liegen meine Daten?</summary>
+          <p>Dein Profil, deine Schreibstimme und dein Gedächtnis liegen in einem Ordner auf deinem eigenen Rechner. Du entscheidest, welchen Ordner du verbindest.</p>
+        </details>
+        <details>
+          <summary>Wie bekomme ich das Paket?</summary>
+          <p>Direkt nach dem Kauf: als Download auf der Bestätigungsseite und zusätzlich per E-Mail. Die Anleitung mit Bildern und die Setup-Videos sind dabei.</p>
+        </details>
+        <details>
+          <summary>Kann ich das Cockpit wieder entfernen?</summary>
+          <p>Ja. Es gibt eine eigene Anleitung, wie du das Setup sauber wieder deinstallierst.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 KI mit Marie &amp; Felix Beilharz</span>
+    <nav aria-label="Rechtliches">
+      <a href="#IMPRESSUM">Impressum</a>
+      <a href="#DATENSCHUTZ">Datenschutz</a>
+      <a href="#AGB">AGB</a>
+      <a href="#WIDERRUF">Widerrufsbelehrung</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="mobile-bar" aria-label="Schnellkauf">
+  <span><b>99 €</b><s>177 €</s></span>
+  <a class="btn" href="#kaufen">Cockpit sichern</a>
+</div>
